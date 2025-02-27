@@ -2,7 +2,7 @@ import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import RootLayout from './pages/RootLayout.jsx'
 import Home from './pages/Home.jsx'
-import Events from './pages/Events.jsx'
+import Events,{loader as addEventLoader} from './pages/Events.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
 
 export default function App() {
@@ -13,7 +13,7 @@ export default function App() {
       errorElement: <ErrorPage/>,
       children: [
         {index: true, element: <Home/>},
-        {path: 'events', element: <Events/>}
+        {path: 'events', element: <Events/>,loader: addEventLoader}
       ]
     }
   ])

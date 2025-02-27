@@ -12,3 +12,13 @@ export const addNewEvent = async(req,res,next) => {
         next(err)
     }
 }
+
+export const getAllEvents = async(req,res,next) => {
+    try{
+        const events = await eventModel.find()
+        return res.status(201).json(events)
+    }
+    catch(err){
+        next(err)
+    }
+}   
