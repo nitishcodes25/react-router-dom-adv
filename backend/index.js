@@ -14,6 +14,7 @@ mongoose.connect(process.env.MONGO_DB_URL)
     console.log('err',err)
 })
 
+app.use(express.json())
 app.use('/event',eventRouter)
 
 app.use((err,req,res,next)=>{
