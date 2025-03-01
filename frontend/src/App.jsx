@@ -13,6 +13,9 @@ import EventDetail, {
 import EditEvent from "./pages/EditEvent.jsx";
 import {action as addEventAction} from './components/EventForm.jsx'
 import NewsletterPage,{action as newsletterAction} from "./pages/NewsletterPage.jsx";
+import AuthenticationPage,{action as authAction} from "./pages/AuthenticationPage.jsx";
+import {action as logoutAction} from './pages/Logout.jsx'
+import { checkAuthLoader, tokenLoader } from "./utils/storage.js";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -20,9 +23,13 @@ export default function App() {
       path: "/",
       element: <RootLayout />,
       errorElement: <ErrorPage />,
+      id: 'root',
+      loader: tokenLoader,
       children: [
         { index: true, element: <Home /> },
         {path:"newsletter", element: <NewsletterPage /> , action: newsletterAction},
+        {path:"auth", element: <AuthenticationPage />, action: authAction},
+        {path:"logout", action: logoutAction},
         {
           path: "event",
           element: <EventLayout />,
@@ -34,10 +41,10 @@ export default function App() {
               loader: eventDetailLoader,
               children: [
                 { index: true, element: <EventDetail /> , action: deleteActionEvent},
-                { path: "edit", element: <EditEvent /> ,action : addEventAction},
+                { path: "edit", element: <EditEvent /> ,action : addEventAction, loader: checkAuthLoader},
               ],
             },
-            { path: "newevent", element: <NewEvent /> , action: addEventAction},
+            { path: "newevent", element: <NewEvent /> , action: addEventAction, loader:  checkAuthLoader},
           ],
         },
       ],

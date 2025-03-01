@@ -8,9 +8,11 @@ import {
   useSubmit,
 } from "react-router-dom";
 import EventsList from "../components/EventsList";
+import { getAuthToken } from "../utils/storage.js";
 
 export default function EventDetail() {
   const { event, events } = useRouteLoaderData("event-detail");
+  const token = useRouteLoaderData('root')
   const submit = useSubmit();
   const deleteHandler = () => {
     const proceed = window.prompt("are you sure");
@@ -33,10 +35,13 @@ export default function EventDetail() {
               />
               <time>{loadEvent.date}</time>
               <p>{loadEvent.description}</p>
+              {token && 
+              <>
               <button>
                 <Link to="edit">Edit</Link>
               </button>
               <button onClick={deleteHandler}>Delete</button>
+              </>}
             </div>
           )}
         </Await>
@@ -92,8 +97,12 @@ export const loader = async ({ req, params }) => {
 
 export const action = async ({ request, params }) => {
   const id = params.eventId;
+  const token = getAuthToken()
   const res = await fetch(`http://localhost:3000/event/${id}/delete`, {
     method: request.method,
+    headers: {
+      "Authorization": "Bearer " + token
+    }
   });
 
   if (!res.ok) {

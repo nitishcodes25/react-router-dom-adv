@@ -1,7 +1,8 @@
 import React from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useRouteLoaderData } from "react-router-dom";
 
 export default function EventLayout() {
+  const token = useRouteLoaderData('root')
   return (
     <div>
       <NavLink
@@ -11,12 +12,14 @@ export default function EventLayout() {
       >
         Events
       </NavLink>
+      {token &&
       <NavLink
         to="newevent"
         style={({ isActive }) => (isActive ? styles.active : undefined)}
       >
         New event
       </NavLink>
+      }
       <main>
         <Outlet />
       </main>
